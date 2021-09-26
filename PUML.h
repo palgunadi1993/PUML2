@@ -117,13 +117,13 @@ private:
 	internal::VertexElementMap<2> m_v2e;
 
 	/** User cell data */
-	std::vector<int*> m_cellData;
+	std::vector<int64_t*> m_cellData;
 
 	/** User vertex data */
 	std::vector<int*> m_vertexData;
 
 	/** Original user vertex data */
-	std::vector<int*> m_originalVertexData;
+	std::vector<int64_t*> m_originalVertexData;
 public:
 	PUML() :
 #ifdef USE_MPI
@@ -138,7 +138,7 @@ public:
 		delete [] m_originalCells;
 		delete [] m_originalVertices;
 
-		for (std::vector<int*>::const_iterator it = m_cellData.begin();
+		for (std::vector<int64_t*>::const_iterator it = m_cellData.begin();
 				it != m_cellData.end(); ++it) {
 			delete [] *it;
 		}
@@ -148,7 +148,7 @@ public:
 			delete [] *it;
 		}
 
-		for (std::vector<int*>::const_iterator it = m_originalVertexData.begin();
+		for (std::vector<int64_t*>::const_iterator it = m_originalVertexData.begin();
 				it != m_originalVertexData.end(); ++it) {
 			delete [] *it;
 		}
@@ -338,7 +338,7 @@ public:
 		checkH5Err(H5Pset_dxpl_mpio(h5alist, H5FD_MPIO_COLLECTIVE));
 #endif // USE_MPI
 
-		int* data = new int[localSize];
+		int64_t* data = new int64_t[localSize];
 		checkH5Err(H5Dread(h5dataset, H5T_NATIVE_INT64, h5memspace, h5space, h5alist, data));
 
 		// Close data
@@ -398,9 +398,9 @@ public:
 		m_originalCells = newCells;
 
 		// Sort other data
-		for (std::vector<int*>::iterator it = m_cellData.begin();
+		for (std::vector<int64_t*>::iterator it = m_cellData.begin();
 				it != m_cellData.end(); ++it) {
-			int* newData = new int[m_originalSize[0]];
+			int64_t* newData = new int64_t[m_originalSize[0]];
 			for (unsigned int i = 0; i < m_originalSize[0]; i++) {
 				newData[i] = (*it)[indices[i]];
 			}
@@ -455,9 +455,9 @@ public:
 		MPI_Type_free(&cellType);
 
 		// Exchange cell data
-		for (std::vector<int*>::iterator it = m_cellData.begin();
+		for (std::vector<int64_t*>::iterator it = m_cellData.begin();
 				it != m_cellData.end(); ++it) {
-			int* newData = new int[m_originalSize[0]];
+			int64_t* newData = new int64_t[m_originalSize[0]];
 			MPI_Alltoallv(*it, sendCount, sDispls, MPI_INT,
 				newData, recvCount, rDispls, MPI_INT,
 				m_comm);
@@ -867,7 +867,7 @@ public:
 	/**
 	 * @return Original user vertex data
 	 */
-	const int* originalVertexData(unsigned int index) const
+	const int64_t* originalVertexData(unsigned int index) const
 	{
 		return m_originalVertexData[index];
 	}
@@ -907,7 +907,7 @@ public:
 	/**
 	 * @return User cell data
 	 */
-	const int* cellData(unsigned int index) const
+	const int64_t* cellData(unsigned int index) const
 	{
 		return m_cellData[index];
 	}
