@@ -123,7 +123,7 @@ private:
 	std::vector<int*> m_vertexData;
 
 	/** Original user vertex data */
-	std::vector<int64_t*> m_originalVertexData;
+	std::vector<int*> m_originalVertexData;
 public:
 	PUML() :
 #ifdef USE_MPI
@@ -148,7 +148,7 @@ public:
 			delete [] *it;
 		}
 
-		for (std::vector<int64_t*>::const_iterator it = m_originalVertexData.begin();
+		for (std::vector<int*>::const_iterator it = m_originalVertexData.begin();
 				it != m_originalVertexData.end(); ++it) {
 			delete [] *it;
 		}
@@ -356,7 +356,8 @@ public:
 			m_cellData.push_back(data);
 			break;
 		case VERTEX:
-			m_originalVertexData.push_back(data);
+            int* aa = (int*)data;
+			m_originalVertexData.push_back(aa);
 			break;
 		}
 	}
@@ -867,7 +868,7 @@ public:
 	/**
 	 * @return Original user vertex data
 	 */
-	const int64_t* originalVertexData(unsigned int index) const
+	const int* originalVertexData(unsigned int index) const
 	{
 		return m_originalVertexData[index];
 	}
