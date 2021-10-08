@@ -459,8 +459,8 @@ public:
 		for (std::vector<int64_t*>::iterator it = m_cellData.begin();
 				it != m_cellData.end(); ++it) {
 			int64_t* newData = new int64_t[m_originalSize[0]];
-			MPI_Alltoallv(*it, sendCount, sDispls, MPI_INT,
-				newData, recvCount, rDispls, MPI_INT,
+			MPI_Alltoallv(*it, sendCount, sDispls, MPI_INT64_T,
+				newData, recvCount, rDispls, MPI_INT64_T,
 				m_comm);
 
 			delete [] *it;
