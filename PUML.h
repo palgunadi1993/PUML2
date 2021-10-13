@@ -356,9 +356,8 @@ public:
 			m_cellData.push_back(data);
 			break;
 		case VERTEX:
-            int* aa = (int*)data;
-			m_originalVertexData.push_back(aa);
-			break;
+			logError() << "not implemented for 64 bits";
+            break;
 		}
 	}
 
